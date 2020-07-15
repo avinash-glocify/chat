@@ -1,9 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Pusher from 'pusher-js';
 import ChatList from './ChatList.jsx';
-import ChatBox from './ChatBox.jsx';
+import ChatBox from './Components/ChatBox2.jsx';
 import Api from './Api';
 
 class Chat extends React.Component {
@@ -12,7 +11,8 @@ class Chat extends React.Component {
         this.state = {
           text: '',
           username: '',
-          chats: []
+          chats: [],
+          users: []
         };
       }
   componentDidMount() {
@@ -35,6 +35,12 @@ class Chat extends React.Component {
         console.log(data);
         this.setState({ chats: [...this.state.chats, data], text: '' });
       });
+
+      Api.get('users/list').then((res) => {
+        this.setState({ users:  res.data.data });
+      }).catch((error) => {
+        console.log(error);
+      });
       this.handleTextChange = this.handleTextChange.bind(this);
   }
 
@@ -53,7 +59,7 @@ class Chat extends React.Component {
         }
       }
   render() {
-    return <div>
+    return <>
         <div className="App">
           <header className="App-header">
             <h1 className="App-title">Welcome to React-Pusher Chat</h1>
@@ -64,10 +70,11 @@ class Chat extends React.Component {
             text={this.state.text}
             username={this.state.username}
             handleTextChange={this.handleTextChange}
+            users={this.state.users}
           />
         </section>
         </div>
-          </div>;
+  </>;
   };
 }
 
