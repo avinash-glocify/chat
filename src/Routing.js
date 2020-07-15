@@ -1,5 +1,5 @@
 import React from 'react';
-import Chat from './chat.jsx';
+import Chat from './Chat.jsx';
 
 import {
   BrowserRouter as Router,

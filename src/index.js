@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import './index.css';
-import routing from './Routing.js';
+import routing from './Routes/Routing.js';
 import'bootstrap/dist/css/bootstrap.min.css';
 import'bootstrap/dist/js/bootstrap.bundle.min';
 

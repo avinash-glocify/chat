@@ -16,14 +16,23 @@ class Chat extends React.Component {
         };
       }
   componentDidMount() {
-      const username = window.prompt('Username: ', 'Anonymous');
+      const username = 'Avinash Negi';
+      const baseUrl = 'http://gis.co/api/auth/';
+      var token     = `Bearer ${localStorage.getItem('_token')}`;
       this.setState({ username });
       const pusher = new Pusher('2123bd1423888ab6296c', {
         cluster: 'ap2',
-        encrypted: true
+        encrypted: true ,
+        authTransport: 'jsonp',
+        authEndpoint: `${baseUrl}pusher`,
+        headers: {
+            'Authorization' : token
+        }
       });
-      const channel = pusher.subscribe('chat');
-      channel.bind('message', data => {
+      Pusher.logToConsole = true;
+      const channel = pusher.subscribe('private-chat-app');
+      channel.bind('App\\Events\\MessageSent', data => {
+        console.log(data);
         this.setState({ chats: [...this.state.chats, data], text: '' });
       });
       this.handleTextChange = this.handleTextChange.bind(this);
@@ -36,7 +45,6 @@ class Chat extends React.Component {
             message: this.state.text
           };
           Api.post('messages', payload).then((res) => {
-            console.log(res);
           }).catch((error) => {
             console.log(error);
           });
@@ -48,7 +56,6 @@ class Chat extends React.Component {
     return <div>
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
             <h1 className="App-title">Welcome to React-Pusher Chat</h1>
           </header>
         <section className="container">

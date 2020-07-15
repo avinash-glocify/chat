@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'http://gis.co/api/',
-  timeout: 1000,
+  baseURL: 'http://gis.co/api/auth/',
+  // timeout: 1000,
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('_token')}`,
   }
