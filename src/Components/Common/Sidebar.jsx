@@ -24,7 +24,7 @@ class SideBar extends React.Component {
         <div className="contacts">
         {users.map(user => {
           return (
-          <li className="active" key={user.id}>
+          <li className="active" key={user.id} data-id={user.id} onClick={this.props.fetchUserChat}>
             <div className="d-flex bd-highlight">
               <div className="img_cont">
                 <img alt="test" src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img" />

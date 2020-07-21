@@ -15,7 +15,7 @@ class User extends React.Component {
   onSubmit = () => {
     Api.post('login', this.state.loginForm ).then(res => {
       if(res.status === 200) {
-        localStorage.setItem('_token', res.data.token);
+        localStorage.setItem('_token', res.data.access_token);
         window.location.href="/"
       }
     }).catch(error => {

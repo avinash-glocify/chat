@@ -4,6 +4,7 @@ import Pusher from 'pusher-js';
 import ChatList from './ChatList.jsx';
 import ChatBox from './Components/ChatBox2.jsx';
 import Api from './Api';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 class Chat extends React.Component {
   constructor(props) {
@@ -12,35 +13,43 @@ class Chat extends React.Component {
           text: '',
           username: '',
           chats: [],
-          users: []
+          users: [],
+          auth: {},
+          channel: '',
+          message: {}
         };
       }
-  componentDidMount() {
-      const username = 'Avinash Negi';
-      const baseUrl = 'http://gis.co/api/auth/';
-      var token     = `Bearer ${localStorage.getItem('_token')}`;
-      this.setState({ username });
-      const pusher = new Pusher('2123bd1423888ab6296c', {
-        cluster: 'ap2',
-        encrypted: true ,
-        authTransport: 'jsonp',
-        authEndpoint: `${baseUrl}pusher`,
-        headers: {
-            'Authorization' : token
-        }
-      });
-      Pusher.logToConsole = true;
-      const channel = pusher.subscribe('private-chat-app');
-      channel.bind('App\\Events\\MessageSent', data => {
-        console.log(data);
-        this.setState({ chats: [...this.state.chats, data], text: '' });
-      });
+  componentWillMount() {
+    Api.get('users/auth').then((res) => {
+      this.setState({ auth: res.data.data});
+      this.setPusher();
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+  setPusher() {
+    const username = 'Avinash Negi';
+    const baseUrl = 'http://gis.co/api/auth/';
+    var token     = `Bearer ${localStorage.getItem('_token')}`;
+    this.setState({ username });
+    const pusher = new Pusher('2123bd1423888ab6296c', {
+      cluster: 'ap2',
+      encrypted: true ,
+      authTransport: 'jsonp',
+      authEndpoint: `${baseUrl}pusher`,
+      headers: {
+          'Authorization' : token
+      }
+    });
+    // Pusher.logToConsole = true;
+    const channel = pusher.subscribe(`private-chat-app-${this.state.auth.id}`);
+    channel.bind('App\\Events\\MessageSent', data => {
+      this.setState({ message: data.message});
+      NotificationManager.success('New Message', data.message.message);
+    });
+  }
 
-      Api.get('users/list').then((res) => {
-        this.setState({ users:  res.data.data });
-      }).catch((error) => {
-        console.log(error);
-      });
+  componentDidMount() {
       this.handleTextChange = this.handleTextChange.bind(this);
   }
 
@@ -65,15 +74,15 @@ class Chat extends React.Component {
             <h1 className="App-title">Welcome to React-Pusher Chat</h1>
           </header>
         <section className="container">
-          <ChatList chats={this.state.chats} />
           <ChatBox
             text={this.state.text}
-            username={this.state.username}
+            auth={this.state.auth}
+            message={this.state.message}
             handleTextChange={this.handleTextChange}
-            users={this.state.users}
           />
         </section>
         </div>
+        <NotificationContainer/>
   </>;
   };
 }
