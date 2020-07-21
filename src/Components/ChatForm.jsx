@@ -1,13 +1,12 @@
 import React from 'react';
 import Api from '../Api';
-import Pusher from 'pusher-js';
 
 class ChatForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = { user: {},  messages:[], auth: {} }
     }
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       this.setState({messages: nextProps.messages, auth: nextProps.auth, user:nextProps.user});
   }
 

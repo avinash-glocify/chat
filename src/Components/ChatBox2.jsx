@@ -9,7 +9,7 @@ class ChatBox extends React.Component {
     super(props);
     this.state = { auth:{}, user: {}, chatUser:[], activeUser: '', messages: [] }
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     this.setState({ auth: nextProps.auth });
     if(nextProps.message) {
       var messageData = this.state.messages.concat(nextProps.message);
@@ -23,12 +23,12 @@ class ChatBox extends React.Component {
   }
   activeUser(userId) {
     const user = parseInt(userId);
-    this.state.chatUser.map((use) => {
+    this.state.chatUser.map(use => {
       if(use.id === user) {
         this.setState({user: use, activeUser:user})
         this.fetchMessages(user);
       }
-    })
+    });
   }
   fetchMessages = (user) => {
     Api.get(`messages/${user}`).then((res) => {

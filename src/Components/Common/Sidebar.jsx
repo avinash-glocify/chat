@@ -5,7 +5,7 @@ class SideBar extends React.Component {
         super();
         this.state = {message: '', users:[]}
       }
-      componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({ users: nextProps.users});
       }
   render() {

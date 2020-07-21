@@ -16,7 +16,7 @@ class Chat extends React.Component {
           users: [],
           auth: {},
           channel: '',
-          message: {}
+          message: ""
         };
       }
   componentWillMount() {
@@ -29,7 +29,7 @@ class Chat extends React.Component {
   }
   setPusher() {
     const username = 'Avinash Negi';
-    const baseUrl = 'http://gis.co/api/auth/';
+    const baseUrl = 'http://localhost/gis/public/api/auth/';
     var token     = `Bearer ${localStorage.getItem('_token')}`;
     this.setState({ username });
     const pusher = new Pusher('2123bd1423888ab6296c', {
@@ -45,7 +45,7 @@ class Chat extends React.Component {
     const channel = pusher.subscribe(`private-chat-app-${this.state.auth.id}`);
     channel.bind('App\\Events\\MessageSent', data => {
       this.setState({ message: data.message});
-      NotificationManager.success('New Message', data.message.message);
+      NotificationManager.success(data.message.message, `${data.user.full_name} Sent New Message`);
     });
   }
 
