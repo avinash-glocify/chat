@@ -29,7 +29,7 @@ class Chat extends React.Component {
   }
   setPusher() {
     const username = 'Avinash Negi';
-    const baseUrl = 'http://localhost/gis/public/api/auth/';
+    const baseUrl = 'http://gis.co/api/auth/';
     var token     = `Bearer ${localStorage.getItem('_token')}`;
     this.setState({ username });
     const pusher = new Pusher('2123bd1423888ab6296c', {
@@ -44,6 +44,7 @@ class Chat extends React.Component {
     // Pusher.logToConsole = true;
     const channel = pusher.subscribe(`private-chat-app-${this.state.auth.id}`);
     channel.bind('App\\Events\\MessageSent', data => {
+      console.log(data.message);
       this.setState({ message: data.message});
       NotificationManager.success(data.message.message, `${data.user.full_name} Sent New Message`);
     });
@@ -70,9 +71,6 @@ class Chat extends React.Component {
   render() {
     return <>
         <div className="App">
-          <header className="App-header">
-            <h1 className="App-title">Welcome to React-Pusher Chat</h1>
-          </header>
         <section className="container">
           <ChatBox
             text={this.state.text}

@@ -7,14 +7,10 @@ import Api from '../Api';
 class ChatBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { auth:{}, user: {}, chatUser:[], activeUser: '', messages: [] }
+    this.state = { auth:{}, user: {},pusherMessage:'', chatUser:[], activeUser: '', messages: [] }
   }
   UNSAFE_componentWillReceiveProps (nextProps) {
-    this.setState({ auth: nextProps.auth });
-    if(nextProps.message) {
-      var messageData = this.state.messages.concat(nextProps.message);
-      this.setState({ messages: messageData });
-    }
+    this.setState({ auth: nextProps.auth, pusherMessage: nextProps.message });
   }
   fetchUserChat = (e) => {
     const user = e.currentTarget.dataset.id;
@@ -59,7 +55,7 @@ class ChatBox extends React.Component {
               <SideBar users={this.state.chatUser} fetchUserChat={this.fetchUserChat} />
             </div>
             <div className="col-md-8 col-xl-8 chat">
-              <ChatForm chatUser={this.state.chatUser} user={this.state.user} fetchMessages={this.fetchMessages} auth={this.state.auth} messages={this.state.messages}  />
+              <ChatForm chatUser={this.state.chatUser} pusherMessage={this.state.pusherMessage} user={this.state.user} fetchMessages={this.fetchMessages} auth={this.state.auth} messages={this.state.messages}  />
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import routing from './Routes/Routing.js';
 import'bootstrap/dist/css/bootstrap.min.css';
 import'bootstrap/dist/js/bootstrap.bundle.min';
 import 'react-notifications/lib/notifications.css';
+import Stripe from 'stripe';
 
 import * as serviceWorker from './serviceWorker';
 

@@ -7,7 +7,11 @@ class ChatForm extends React.Component {
       this.state = { user: {},  messages:[], auth: {} }
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
-      this.setState({messages: nextProps.messages, auth: nextProps.auth, user:nextProps.user});
+      this.setState({messages: nextProps.messages,pusherMessage:nextProps.pusherMessage, auth: nextProps.auth, user:nextProps.user});
+      if(nextProps.pusherMessage) {
+        var messageData = this.state.messages.concat(nextProps.pusherMessage);
+        this.setState({ messages: messageData });
+      }
   }
 
   sendMessage = (e) => {
@@ -33,6 +37,7 @@ class ChatForm extends React.Component {
   }
   render() {
     const {messages, auth} = this.state;
+    console.log(messages);
     return <>
     <div className="card">
       <div className="card-header msg_head">
