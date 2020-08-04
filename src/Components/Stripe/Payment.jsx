@@ -46,7 +46,7 @@ class Payment extends React.Component {
         var errorElement = document.getElementById('card-errors');
         errorElement.textContent = result.error.message;
       } else {
-        Api.post('charge', {token:result.token.id, plan:1}).then((res) => {
+        Api.post('charge', {token:result.token.id, plan:3}).then((res) => {
 
         }).catch((error) => {
 
